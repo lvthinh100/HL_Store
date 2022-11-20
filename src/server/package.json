@@ -1,17 +1,15 @@
 {
-  "name": "natour",
+  "name": "hl.store",
   "version": "1.0.0",
-  "description": "Learning node express mongodb",
+  "description": "Back-end for HL.Store",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "nodemon server.js",
     "start:prod": "SET NODE_ENV=production & nodemon server.js",
-    "debug": "ndb server.js",
-    "watch:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundel.js",
-    "build:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundel.js"
+    "debug": "ndb server.js"
   },
-  "author": "me",
+  "author": "thinh100",
   "license": "ISC",
   "dependencies": {
     "@types/express": "^4.17.13",

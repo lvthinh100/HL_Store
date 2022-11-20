@@ -1,33 +1,35 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
-process.on('uncaughtException', (err) => {
-  console.log(err.name, err.message);
-  console.log('Uncaught Exception: server is shutting down');
-  process.exit(1);
-});
+//Exception handler
+// process.on('uncaughtException', (err) => {
+//   console.log(err.name, err.message);
+//   console.log('Uncaught Exception: server is shutting down');
+//   process.exit(1);
+// });
 
 dotenv.config({ path: './config.env' });
 const app = require('./app');
 
-const db = process.env.DATABASE.replace(
-  '<PASSWORD>',
-  process.env.DATABASE_PASSWORD
-);
-mongoose
-  .connect(db, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log('db connect successfully'));
+// *Connect to db  for later
+// const db = process.env.DATABASE.replace(
+//   '<PASSWORD>',
+//   process.env.DATABASE_PASSWORD
+// );
+// mongoose
+//   .connect(db, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => console.log('db connect successfully'));
 
+//Create server with app
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
-  console.log('Starting the server');
+  console.log('Starting the server at 127.0.0.1:3000');
 });
 
-console.log("hello world")
-
+//Exception handler
 process.on('unhandledRejection', (err) => {
   console.log(err.name, err.message);
   console.log('Unhandled Rejection: server is shutting down');

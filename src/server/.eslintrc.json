@@ -3,7 +3,6 @@
   "plugins": ["prettier"],
   "rules": {
     "spaced-comment": "off",
-    "no-console": "warn",
     "consistent-return": "off",
     "func-names": "off",
     "object-shorthand": "off",
