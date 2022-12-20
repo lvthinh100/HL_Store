@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-  product: 
+  products: 
   [
     {
-      name: {
+      name_product: {
         type: String,
         require: true,
       },
@@ -32,6 +32,30 @@ const orderSchema = new mongoose.Schema({
   },
   total_amount: {
     type: Number,
+    require: true,
+  },
+  name_customer: {
+    type: String,
+    require: true,
+  },
+  email: {
+    type: String,
+    require: false,
+  },
+  sdt: {
+    type: String,
+    require: true,
+  },
+  address: {
+    type: String,
+    require: true,
+  },
+  note: {
+    type: String,
+    require: false,
+  },
+  method: {
+    type: String,
     require: true,
   },
 });
