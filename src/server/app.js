@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 
 //utils
 const AppError = require('./utils/AppError');
+const orderController = require('./controller/orderController')
 // const GlobalErrorHandler = require('./controller/errorController');
 
 //router
@@ -79,6 +80,10 @@ app.get('/', (req, res) => {
 // app.use('/api/v1/tours', tourRouter);
 // app.use('/api/v1/users', userRouter);
 // app.use('/api/v1/reviews', reviewRouter);
+app.get('/orders', orderController.getOrder);
+app.post('/orders', orderController.createOrder);
+app.delete('/orders', orderController.deleteOrder);
+app.patch('/orders/:id', orderController.updateOrder);
 
 //Global error handler
 app.all('*', (req, res, next) => {
