@@ -11,9 +11,14 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 //utils
 const AppError = require('./utils/AppError');
+ 
+const orderController = require('./controller/orderController')
+// const GlobalErrorHandler = require('./controller/errorController');
+
 // const productController = require('./controller/productController');
 // const commentController = require('./controller/commentController');
 const GlobalErrorHandler = require('./controller/errorController');
+
 
 //router
 // const tourRouter = require('./routes/tourRoutes');
@@ -95,6 +100,13 @@ app.get('/', (req, res) => {
 
 // app.post('/comments', commentController.createComments);
 // app.use('/api/v1/tours', tourRouter);
+
+// app.use('/api/v1/users', userRouter);
+// app.use('/api/v1/reviews', reviewRouter);
+app.get('/orders', orderController.getOrder);
+app.post('/orders', orderController.createOrder);
+app.delete('/orders', orderController.deleteOrder);
+app.patch('/orders/:id', orderController.updateOrder);
 
 //DEFINE API HERE
 app.use('/api/users', userRouter);
