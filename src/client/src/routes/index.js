@@ -1,29 +1,20 @@
 import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Product from "../pages/Product.js";
 import Home from "../pages/Home.js";
+import Payment from "../pages/Payment.js";
 import Login from "../pages/Login.js";
+import Layout from "../pages/Layout.js";
 
 export default function MyRouter() {
   return (
-    <div>
-      <h1>This is a simple navigation</h1>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
-        <li>
-          <Link to="/product/ao">Product: Áo</Link>
-        </li>
-      </ul>
+    <Layout>
       <Routes>
         <Route exact path="/" element={<Home />} />
+        <Route exact path="/payment" element={<Payment />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/product/:id" element={<Product />} />
       </Routes>
-    </div>
+    </Layout>
   );
 }
