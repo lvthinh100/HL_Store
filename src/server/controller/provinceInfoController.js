@@ -79,3 +79,9 @@ exports.getWard = (req, res, next) => {
     data: wardInfo.district[+id].ward.map((el) => `${el.pre} ${el.name}`),
   });
 };
+
+exports.randomFeature = (req, res, next) => {
+  res.status(200).json({
+    text: 'random feature',
+  });
+};
