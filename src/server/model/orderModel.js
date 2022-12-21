@@ -4,7 +4,7 @@ const orderSchema = new mongoose.Schema({
   products: 
   [
     {
-      name_product: {
+      nameProduct: {
         type: String,
         require: true,
       },
@@ -34,7 +34,7 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     require: true,
   },
-  name_customer: {
+  nameCustomer: {
     type: String,
     require: true,
   },
@@ -42,7 +42,7 @@ const orderSchema = new mongoose.Schema({
     type: String,
     require: false,
   },
-  sdt: {
+  phone: {
     type: String,
     require: true,
   },
