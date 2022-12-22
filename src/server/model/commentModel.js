@@ -13,6 +13,10 @@ const commentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  product: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Product',
+  },
 });
 
 module.exports = mongoose.model('Comment', commentSchema);

@@ -57,6 +57,14 @@ const orderSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    path: 'User',
+  },
+  voucher: {
+    type: mongoose.Schema.ObjectId,
+    path: 'Voucher',
+  },
 });
 
 module.exports = mongoose.model('Order', orderSchema);
