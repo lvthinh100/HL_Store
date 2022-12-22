@@ -1,17 +1,17 @@
-// const productModel = require('../model/productModel');
+const productModel = require('../model/productModel');
 
-// exports.getProducts = async (req, res) => {
-//   const data = await productModel.find().populate({
-//     path: 'comments',
-//   });
-//   //   .populate({
-//   //     path: 'comments',
-//   //   });
-//   res.status(200).json({
-//     status: 'success',
-//     data,
-//   });
-// };
+exports.getProducts = async (req, res) => {
+  const data = await productModel.find().populate({
+    path: 'comments',
+  });
+  //   .populate({
+  //     path: 'comments',
+  //   });
+  res.status(200).json({
+    status: 'success',
+    data,
+  });
+};
 
 // exports.createProducts = async (req, res) => {
 //   const data = req.body;
@@ -45,3 +45,14 @@
 //     data: docs,
 //   });
 // };
+exports.getProductById = async (req, res, next) => {
+  const data = await productModel.findById(req.params.id).populate({
+    path: 'comments',
+    select: 'rating userName comment',
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data,
+  });
+};

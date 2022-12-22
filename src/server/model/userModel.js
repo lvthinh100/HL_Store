@@ -2,50 +2,86 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    trim: true,
-    unique: true,
-    validate: [validator.isEmail, 'Please insert valid email'],
-    lowercase: true,
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 8,
-    select: false,
-  },
-  confirmPassword: {
-    type: String,
-    validate: {
-      validator: function (val) {
-        return val === this.password;
-      },
-      message: 'Password are not the same',
+const userSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
+      validate: [validator.isEmail, 'Please insert valid email'],
+      lowercase: true,
     },
+    password: {
+      type: String,
+      required: true,
+      minlength: 8,
+      select: false,
+    },
+    confirmPassword: {
+      type: String,
+      validate: {
+        validator: function (val) {
+          return val === this.password;
+        },
+        message: 'Password are not the same',
+      },
+    },
+    name: {
+      type: String,
+      required: [true, 'Please Enter name'],
+    },
+    address: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: ['customer', 'admin'],
+    },
+    phone: {
+      type: String,
+      required: [true, 'Please give phone number'],
+      validate: [validator.isMobilePhone, 'Please insert valid phone number'],
+    },
+    cart: [
+      {
+        productId: {
+          type: String,
+          required: true,
+        },
+        productName: {
+          type: String,
+          required: true,
+        },
+        price: {
+          type: Number,
+          require: true,
+        },
+        img: {
+          type: String,
+          default: '/img/model.jpg',
+        },
+        size: {
+          type: String,
+          enum: ['S', 'M', 'L', 'XL'],
+        },
+      },
+    ],
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
   },
-  name: {
-    type: String,
-    required: [true, 'Please Enter name'],
-  },
-  address: {
-    type: String,
-    required: true,
-  },
-  role: {
-    type: String,
-    enum: ['customer', 'admin'],
-  },
-  phone: {
-    type: String,
-    required: [true, 'Please give phone number'],
-    validate: [validator.isMobilePhone, 'Please insert valid phone number'],
-  },
-  passwordChangedAt: Date,
-  passwordResetToken: String,
-  passwordResetExpires: Date,
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
+
+userSchema.virtual('orders', {
+  ref: 'Order',
+  foreignField: 'user',
+  localField: '_id',
 });
 
 userSchema.pre('save', async function (next) {
