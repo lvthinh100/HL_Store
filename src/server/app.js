@@ -16,7 +16,8 @@ const orderController = require('./controller/orderController')
 // const GlobalErrorHandler = require('./controller/errorController');
 
 // const productController = require('./controller/productController');
-// const commentController = require('./controller/commentController');
+const commentController = require('./controller/commentController');
+const voucherController = require('./controller/voucherController');
 const GlobalErrorHandler = require('./controller/errorController');
 
 
@@ -98,11 +99,23 @@ app.get('/', (req, res) => {
 // app.delete('/products', productController.deleteProducts);
 // app.patch('/products/:id', productController.updateProduct);
 
-// app.post('/comments', commentController.createComments);
-// app.use('/api/v1/tours', tourRouter);
+//Comment API
+app.post('/comments', commentController.createComments);
+app.get('/comments', commentController.getComments);
+app.delete('/comments/:id', commentController.deleteComments);
+app.patch('/comments/:id', commentController.updateComments);
 
+//Voucher API 
+app.post('/vouchers', voucherController.createVouchers);
+app.get('/vouchers', voucherController.getVouchers);
+app.delete('/vouchers/:id', voucherController.deleteVouchers);
+app.patch('/vouchers/:id', voucherController.updateVouchers);
+
+
+// app.use('/api/v1/tours', tourRouter);
 // app.use('/api/v1/users', userRouter);
 // app.use('/api/v1/reviews', reviewRouter);
+
 app.get('/orders', orderController.getOrder);
 app.post('/orders', orderController.createOrder);
 app.delete('/orders', orderController.deleteOrder);
