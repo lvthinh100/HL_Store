@@ -12,21 +12,18 @@ const cors = require('cors');
 //utils
 const AppError = require('./utils/AppError');
 
-const orderController = require('./controller/orderController');
-// const GlobalErrorHandler = require('./controller/errorController');
-
-const productController = require('./controller/productController');
-const commentController = require('./controller/commentController');
-const voucherController = require('./controller/voucherController');
 const GlobalErrorHandler = require('./controller/errorController');
 
 //router
 // const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const provinceRouter = require('./routes/provincesRoutes');
+const commentRouter = require('./routes/commentRoutes');
+const voucherRouter = require('./routes/voucherRoutes');
+const orderRouter = require('./routes/orderRoutes');
+const productRouter = require('./routes/productRoutes');
 // const reviewRouter = require('./routes/reviewRoutes');
 // const viewRouter = require('./routes/viewRoutes');
-// const authController = require('./controller/authController');
 
 const app = express();
 
@@ -88,36 +85,13 @@ app.use((req, res, next) => {
   next();
 });
 
-//ROUTES
-app.get('/', (req, res) => {
-  res.send('Hello World');
-});
-
-//Comment API
-app.post('/comments', commentController.createComments);
-app.get('/comments', commentController.getComments);
-app.delete('/comments/:id', commentController.deleteComments);
-app.patch('/comments/:id', commentController.updateComments);
-
-//Voucher API
-app.post('/vouchers', voucherController.createVouchers);
-app.get('/vouchers', voucherController.getVouchers);
-app.delete('/vouchers/:id', voucherController.deleteVouchers);
-app.patch('/vouchers/:id', voucherController.updateVouchers);
-
-// app.use('/api/v1/tours', tourRouter);
-// app.use('/api/v1/users', userRouter);
-// app.use('/api/v1/reviews', reviewRouter);
-app.get('/orders', orderController.getOrder);
-app.post('/orders', orderController.createOrder);
-app.delete('/orders', orderController.deleteOrder);
-app.patch('/orders/:id', orderController.updateOrder);
-
-app.get('/api/products/:id', productController.getProductById);
-
 //DEFINE API HERE
 app.use('/api/users', userRouter);
 app.use('/api/provinces', provinceRouter);
+app.use('/api/comments', commentRouter);
+app.use('/api/vouchers', voucherRouter);
+app.use('/api/orders', orderRouter);
+app.use('/api/products', productRouter);
 
 //Global error handler
 app.all('*', (req, res, next) => {

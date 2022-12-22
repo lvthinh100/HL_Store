@@ -13,15 +13,15 @@ exports.getProducts = async (req, res) => {
   });
 };
 
-// exports.createProducts = async (req, res) => {
-//   const data = req.body;
-//   const response = await productModel.create(data);
+exports.createProducts = async (req, res) => {
+  const data = req.body;
+  const response = await productModel.create(data);
 
-//   res.status(200).json({
-//     status: 'success',
-//     data: response,
-//   });
-// };
+  res.status(200).json({
+    status: 'success',
+    data: response,
+  });
+};
 
 // exports.deleteProducts = async (req, res) => {
 //   const data = req.body;
@@ -45,14 +45,46 @@ exports.getProducts = async (req, res) => {
 //     data: docs,
 //   });
 // };
+
+//Lay thong tin product bằng ID product
 exports.getProductById = async (req, res, next) => {
-  const data = await productModel.findById(req.params.id).populate({
+  const productId = req.params.id;
+  const data = await productModel.findById(productId).populate({
     path: 'comments',
     select: 'rating userName comment',
   });
+  // =>> nó sẽ lấy ra tất cả các comment có productId = _id mình truyền vao
 
   res.status(200).json({
     status: 'success',
     data,
+  });
+};
+
+exports.increaseProductLike = async (req, res, next) => {
+  //
+  const idProduct = req.params.id;
+  let { like } = await productModel.findById(idProduct).select('like'); // { id, like }
+  like += 1;
+
+  const newProd = await productModel.findByIdAndUpdate(
+    idProduct,
+    {
+      like,
+    },
+    { new: true }
+  );
+
+  res.status(200).json({
+    status: 'success',
+    data: newProd,
+  });
+  //
+};
+
+exports.searchProd = async (req, res, next) => {
+  res.status(200).json({
+    status: 'success',
+    data: 'Search value day ne',
   });
 };
