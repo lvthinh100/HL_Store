@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-  product: [
+  products: [
     {
-      name: {
+      nameProduct: {
         type: String,
         require: true,
       },
@@ -29,8 +29,32 @@ const orderSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  total_amount: {
+  totalAmount: {
     type: Number,
+    require: true,
+  },
+  nameCustomer: {
+    type: String,
+    require: true,
+  },
+  email: {
+    type: String,
+    require: false,
+  },
+  phone: {
+    type: String,
+    require: true,
+  },
+  address: {
+    type: String,
+    require: true,
+  },
+  note: {
+    type: String,
+    require: false,
+  },
+  method: {
+    type: String,
     require: true,
   },
 });
