@@ -1,6 +1,4 @@
-const { response } = require('../app');
 const voucherModel = require('../model/voucherModel');
-const commentModel = require('../model/voucherModel');
 
 exports.getVouchers = async (req, res) => {
   const data = await voucherModel.find();

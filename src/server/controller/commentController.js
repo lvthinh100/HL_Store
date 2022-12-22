@@ -1,4 +1,3 @@
-const { response } = require('../app');
 const commentModel = require('../model/commentModel');
 
 exports.getComments = async (req, res) => {

@@ -11,15 +11,14 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 //utils
 const AppError = require('./utils/AppError');
- 
-const orderController = require('./controller/orderController')
+
+const orderController = require('./controller/orderController');
 // const GlobalErrorHandler = require('./controller/errorController');
 
 // const productController = require('./controller/productController');
 const commentController = require('./controller/commentController');
 const voucherController = require('./controller/voucherController');
 const GlobalErrorHandler = require('./controller/errorController');
-
 
 //router
 // const tourRouter = require('./routes/tourRoutes');
@@ -94,23 +93,17 @@ app.get('/', (req, res) => {
   res.send('Hello World');
 });
 
-// app.get('/api/products', authController.protect, productController.getProducts);
-// app.post('/products', productController.createProducts);
-// app.delete('/products', productController.deleteProducts);
-// app.patch('/products/:id', productController.updateProduct);
-
 //Comment API
 app.post('/comments', commentController.createComments);
 app.get('/comments', commentController.getComments);
 app.delete('/comments/:id', commentController.deleteComments);
 app.patch('/comments/:id', commentController.updateComments);
 
-//Voucher API 
+//Voucher API
 app.post('/vouchers', voucherController.createVouchers);
 app.get('/vouchers', voucherController.getVouchers);
 app.delete('/vouchers/:id', voucherController.deleteVouchers);
 app.patch('/vouchers/:id', voucherController.updateVouchers);
-
 
 // app.use('/api/v1/tours', tourRouter);
 // app.use('/api/v1/users', userRouter);
