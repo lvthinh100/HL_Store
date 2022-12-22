@@ -34,10 +34,6 @@ const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema(
   {
-    id: {
-      type: String,
-      required: true,
-    },
     name: {
       type: String,
       required: true,
@@ -59,7 +55,7 @@ const productSchema = new mongoose.Schema(
     },
     discount: {
       type: Number,
-      required: true,
+      default: 0,
     },
     image: {
       type: String,
@@ -70,7 +66,7 @@ const productSchema = new mongoose.Schema(
     },
     like: {
       type: Number,
-      required: true,
+      default: 0,
     },
   },
   {
@@ -79,10 +75,20 @@ const productSchema = new mongoose.Schema(
   }
 );
 
+//virtual field
+// comments [ idComment ];
 productSchema.virtual('comments', {
   ref: 'Comment',
-  foreignField: 'product',
-  localField: '_id',
+  foreignField: 'product', //Khóa ngoại (Khóa bên ngoài Model)
+  localField: '_id', //Khóa ở bên trong Model
 });
+/*
+Select rating userName comment from Product
+Join Comment on Product._id = Comment.productId
+
+=> [ { productId = 6384d20a3e161d6510dac1ab }, {productId = 6384d20a3e161d6510dac1ab} ]
+sau dó nó truyền vào comments trong product.
+
+*/
 
 module.exports = mongoose.model('Product', productSchema);
