@@ -101,4 +101,3 @@ app.all('*', (req, res, next) => {
 app.use(GlobalErrorHandler);
 
 module.exports = app;
-
