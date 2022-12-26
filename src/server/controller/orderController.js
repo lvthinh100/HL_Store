@@ -47,20 +47,20 @@ exports.addOrder = async (req, res) => {
   const userr = req.user;
 
   const response = await orderModel.create(data);
-  // const newOrder = await orderModel.findByIdAndUpdate(
-  //   response.id ,
-  //   {
-  //     // totalAmount: total,
-  //     nameCustomer: userr.name , 
-  //     email: userr.email,
-  //     phone: userr.phone,
-  //     address: userr.address, 
-  //     user: userr._id,
-  //   },
-  //   { new: true }
-  // );
+  const newOrder = await orderModel.findByIdAndUpdate(
+    response.id ,
+    {
+      totalAmount: data.products[0].price * data.products[0].quantity,
+      nameCustomer: userr.name , 
+      email: userr.email,
+      phone: userr.phone,
+      address: userr.address, 
+      user: userr._id,
+    },
+    { new: true }
+  );
   res.status(200).json({
     status: 'success',
-    data: response,
+    data: newOrder,
   });
 };
