@@ -8,5 +8,6 @@ router.post('/', commentController.createComments);
 router.get('/', commentController.getComments);
 router.delete('/:id', commentController.deleteComments);
 router.patch('/:id', commentController.updateComments);
+router.post('/comments', commentController.addComments);
 
 module.exports = router;
