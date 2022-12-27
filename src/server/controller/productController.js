@@ -82,6 +82,27 @@ exports.increaseProductLike = async (req, res, next) => {
   //
 };
 
+exports.decreaseProductLike = async (req, res, next) => {
+  //
+  const idProduct = req.params.id;
+  let { like } = await productModel.findById(idProduct).select('like'); // { id, like }
+  like -= 1;
+
+  const newProd = await productModel.findByIdAndUpdate(
+    idProduct,
+    {
+      like,
+    },
+    { new: true }
+  );
+
+  res.status(200).json({
+    status: 'success',
+    data: newProd,
+  });
+  //
+};
+
 exports.searchProd = async (req, res, next) => {
   res.status(200).json({
     status: 'success',
