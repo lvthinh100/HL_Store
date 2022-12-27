@@ -41,3 +41,14 @@ exports.updateOrder = async (req, res) => {
     data: docs,
   });
 };
+
+exports.updateStatusOrder = async (req, res) => {
+  const orderID = req.params.id;
+  const curStatus = req.body.status;
+  const docs = await orderModel.findByIdAndUpdate(orderID, { status: curStatus, new: true, });
+
+  res.status(200).json({
+    status: "success",
+    data: docs,
+  });
+};
