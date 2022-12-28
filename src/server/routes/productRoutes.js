@@ -15,5 +15,7 @@ router.patch(
 );
 router.get('/:id', productController.getProductById);
 router.get('/search/:key', productController.searchProd);
+router.get('/searchCategory/:key', productController.searchCategoryProd);
+router.get('/searchRate/hightRate', productController.searchRate);
 
 module.exports = router;
