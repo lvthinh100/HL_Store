@@ -16,6 +16,9 @@ const appSlice = createSlice({
     toggleShowAuthModal(state) {
       state.showAuthModal = !state.showAuthModal;
     },
+    showAuthModal(state) {
+      state.showAuthModal = true;
+    },
     showNotification(state, action) {
       state.notification = { open: true, ...action.payload };
     },

@@ -138,7 +138,7 @@ export default function PaymentForm() {
         </Grid>
       </Grid>
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
-        Submit
+        PAY
       </Button>
     </FormProvider>
   );
