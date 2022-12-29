@@ -94,6 +94,18 @@ exports.searchProd = async (req, res, next) => {
   });
 };
 
+
+exports.deleteProductByID = async (req, res, next) => {
+  const idProduct = req.params.id;
+
+  const response = await productModel.findByIdAndDelete(idProduct);
+
+  res.status(200).json({
+    status: 'success',
+    data: response,
+  });
+};
+
 const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, cb) => {
@@ -124,3 +136,4 @@ exports.resizeProductImage = catchAsync(async (req, res, next) => {
 
 exports.updateProduct = factory.updateOne(productModel);
 exports.getAllProducts = factory.getAll(productModel);
+
