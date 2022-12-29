@@ -71,9 +71,7 @@ exports.getAll = (Model) =>
       status: 'success',
       results: docs.length,
       requestedAt: req.requestTime,
-      data: {
-        data: docs,
-      },
+      data: docs,
     });
   });
 

@@ -10,7 +10,7 @@ import {
   Select,
 } from "@mui/material";
 
-export default function RHFSelect({
+export default function RHFMultiSelect({
   name,
   label,
   options,
@@ -27,6 +27,7 @@ export default function RHFSelect({
         <FormControl fullWidth>
           <InputLabel sx={{ top: 6, fontSize: "1.1rem" }}>{label}</InputLabel>
           <Select
+            multiple
             label={label}
             error={!!error}
             inputRef={field.ref}
