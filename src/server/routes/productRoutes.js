@@ -15,5 +15,6 @@ router.patch(
 );
 router.get('/:id', productController.getProductById);
 router.get('/search/:key', productController.searchProd);
+router.patch('/updateProduct/:id', authController.protect, authController.restrictTo('admin'), productController.updateProduct);
 
 module.exports = router;

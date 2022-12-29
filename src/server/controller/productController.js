@@ -33,18 +33,18 @@ exports.createProducts = async (req, res) => {
 //   });
 // };
 
-// exports.updateProduct = async (req, res) => {
-//   const data = req.body;
-//   const { id } = req.params;
-//   const docs = await productModel.findByIdAndUpdate(id, data, {
-//     new: true,
-//   });
+exports.updateProduct = async (req, res) => {
+  const data = req.body;
+  const { id } = req.params;
+  const docs = await productModel.findByIdAndUpdate(id, data, {
+    new: true,
+  });
 
-//   res.status(200).json({
-//     status: 'success',
-//     data: docs,
-//   });
-// };
+  res.status(200).json({
+    status: 'success',
+    data: docs,
+  });
+};
 
 //Lay thong tin product bằng ID product
 exports.getProductById = async (req, res, next) => {

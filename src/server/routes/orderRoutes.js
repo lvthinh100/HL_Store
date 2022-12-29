@@ -8,6 +8,6 @@ const router = express.Router();
 router.get('/', orderController.getOrder);
 router.post('/', orderController.createOrder);
 router.delete('/', orderController.deleteOrder);
-router.patch('/:id/updateOrder', orderController.updateOrder);
-router.patch('/:id/updateStatusOrder', authController.protect, authController.restrictTo("admin"), orderController.updateStatusOrder);
+router.patch('/updateOrder/:id', orderController.updateOrder);
+router.patch('/updateStatusOrder/:id', authController.protect, authController.restrictTo('admin'), orderController.updateStatusOrder);
 module.exports = router;
