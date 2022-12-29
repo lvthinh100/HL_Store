@@ -2,7 +2,7 @@ const multer = require('multer');
 const sharp = require('sharp');
 
 const productModel = require('../model/productModel');
-const commentModel = require('../model/commentModel');
+// const commentModel = require('../model/commentModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 const factory = require('./factoryHandler');

@@ -6,10 +6,11 @@ const authController = require('../controller/authController');
 const router = express.Router();
 
 router.get(
-    '/',
-    authController.protect,
-    authController.restrictTo('admin'),  
-    orderController.getOrder);
+  '/',
+  authController.protect,
+  authController.restrictTo('admin'),
+  orderController.getOrder
+);
 router.post('/', orderController.createOrder);
 router.delete('/', orderController.deleteOrder);
 router.post('/orders', authController.protect, orderController.addOrder);
