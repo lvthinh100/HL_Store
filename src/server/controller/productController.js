@@ -87,10 +87,13 @@ exports.increaseProductLike = async (req, res, next) => {
   //
 };
 
-exports.searchProd = async (req, res, next) => {
+exports.searchProduct = async (req, res, next) => {
+  const key = req.params.key;
+
+  const data = await productModel.find({ name: key });
   res.status(200).json({
     status: 'success',
-    data: 'Search value day ne',
+    data,
   });
 };
 

@@ -44,3 +44,12 @@ exports.updateComments = async (req, res) => {
     data: docs,
   });
 };
+exports.addComments = async (req, res) => {
+  const data = req.body;
+  const response = await commentModel.create(data);
+
+  res.status(200).json({
+    status: 'success',
+    data: response,
+  });
+};

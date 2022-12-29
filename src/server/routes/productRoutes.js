@@ -15,11 +15,12 @@ router.patch(
 );
 router.patch(
   '/upLike/:id',
-  authController.protect,
+  authController.protect, // đăng nhập
   authController.restrictTo('admin'),
   productController.increaseProductLike
 );
 router.get('/:id', productController.getProductById);
+router.get('/search/:key', productController.searchProduct);
 router.get('/search/:key', productController.searchProd);
 router.delete(
   '/delete/:id',
