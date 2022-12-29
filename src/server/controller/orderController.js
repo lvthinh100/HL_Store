@@ -48,13 +48,13 @@ exports.addOrder = async (req, res) => {
 
   const response = await orderModel.create(data);
   const newOrder = await orderModel.findByIdAndUpdate(
-    response.id ,
+    response.id,
     {
       totalAmount: data.products[0].price * data.products[0].quantity,
-      nameCustomer: userr.name , 
+      nameCustomer: userr.name,
       email: userr.email,
       phone: userr.phone,
-      address: userr.address, 
+      address: userr.address,
       user: userr._id,
     },
     { new: true }

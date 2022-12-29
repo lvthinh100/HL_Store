@@ -7,7 +7,6 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 const factory = require('./factoryHandler');
 
-
 exports.getProducts = async (req, res) => {
   const data = await productModel.find().populate({
     path: 'comments',
@@ -90,7 +89,7 @@ exports.increaseProductLike = async (req, res, next) => {
 };
 
 exports.searchProduct = async (req, res, next) => {
-  const key = req.params.key;
+  const { key } = req.params;
 
   const data = await productModel.find({ name: key });
   res.status(200).json({
@@ -98,7 +97,6 @@ exports.searchProduct = async (req, res, next) => {
     data,
   });
 };
-
 
 exports.deleteProductByID = async (req, res, next) => {
   const idProduct = req.params.id;
@@ -111,48 +109,45 @@ exports.deleteProductByID = async (req, res, next) => {
   });
 };
 exports.searchCategoryProd = async (req, res, next) => {
-  const key = req.params.key;
+  const { key } = req.params;
 
-  const data = await productModel.find({category: key});
+  const data = await productModel.find({ category: key });
   res.status(200).json({
     status: 'success',
     data: data,
   });
 };
 
-exports.searchRate = async (req, res, next) => {
-  // const data = await productModel.find({ category: "underwear" });
-  // data[1] = await productModel.find({ category: "winter" });
+// exports.searchRate = async (req, res, next) => {
+//   // const data = await productModel.find({ category: "underwear" });
+//   // data[1] = await productModel.find({ category: "winter" });
 
-  // const productId = req.params.id;
-  const sl = 6;
-  const data = await commentModel.find({rating: 5});
-  if (data.length < sl)
-  {
-    for (let i = 4; i>0; i--)
-    {
-      cmp_data = await commentModel.find({rating: i});
-      for (let j = 0; j < cmp_data.length; j++)
-      {
-        data[data.length] = cmp_data[j];
-        if (data.length >= sl)
-          break;
-      }
-      if (data.length >= sl)
-          break;
-   }
-  }
+//   // const productId = req.params.id;
+//   const sl = 6;
+//   const data = await commentModel.find({ rating: 5 });
+//   if (data.length < sl) {
+//     for (let i = 4; i > 0; i -= 1) {
+//       cmp_data = await commentModel.find({ rating: i });
+//       for (let j = 0; j < cmp_data.length; j++) {
+//         data[data.length] = cmp_data[j];
+//         if (data.length >= sl) break;
+//       }
+//       if (data.length >= sl) break;
+//     }
+//   }
 
-  const data_prod = await productModel.find({ _id: data[0].product });  
-  for (let i = 1; i < data.length; i++)
-  {
-    data_prod[data_prod.length] = await productModel.find({ _id: data[i].product });
-  }
-  res.status(200).json({
-    status: 'success',
-    data: data_prod,
-  });
-};
+//   const data_prod = await productModel.find({ _id: data[0].product });
+//   for (let i = 1; i < data.length; i++) {
+//     data_prod[data_prod.length] = await productModel.find({
+//       _id: data[i].product,
+//     });
+//   }
+//   res.status(200).json({
+//     status: 'success',
+//     data: data_prod,
+//   });
+// };
+
 const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, cb) => {
@@ -183,4 +178,3 @@ exports.resizeProductImage = catchAsync(async (req, res, next) => {
 
 exports.updateProduct = factory.updateOne(productModel);
 exports.getAllProducts = factory.getAll(productModel);
-

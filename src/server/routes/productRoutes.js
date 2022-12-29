@@ -23,11 +23,11 @@ router.get('/:id', productController.getProductById);
 router.get('/search/:key', productController.searchProduct);
 router.get('/search/:key', productController.searchProd);
 router.get('/searchCategory/:key', productController.searchCategoryProd);
-router.get('/searchRate/hightRate', productController.searchRate);
+// router.get('/searchRate/hightRate', productController.searchRate);
 router.delete(
   '/delete/:id',
   authController.protect,
-  authController.restrictTo('admin'), 
+  authController.restrictTo('admin'),
   productController.deleteProductByID
 );
 
