@@ -5,9 +5,14 @@ const authController = require('../controller/authController');
 //Comment API
 const router = express.Router();
 
+router.get('/', productController.getAllProducts);
 router.post('/', productController.createProducts);
-
-
+router.patch(
+  '/:id',
+  productController.uploadProductImage,
+  productController.resizeProductImage,
+  productController.updateProduct
+);
 router.patch(
   '/upLike/:id',
   authController.protect,

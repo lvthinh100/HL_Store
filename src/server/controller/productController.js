@@ -1,4 +1,10 @@
+const multer = require('multer');
+const sharp = require('sharp');
+
 const productModel = require('../model/productModel');
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/AppError');
+const factory = require('./factoryHandler');
 
 exports.getProducts = async (req, res) => {
   const data = await productModel.find().populate({
@@ -51,7 +57,6 @@ exports.getProductById = async (req, res, next) => {
   const productId = req.params.id;
   const data = await productModel.findById(productId).populate({
     path: 'comments',
-    select: 'rating userName comment',
   });
   // =>> nó sẽ lấy ra tất cả các comment có productId = _id mình truyền vao
 
@@ -89,6 +94,7 @@ exports.searchProd = async (req, res, next) => {
   });
 };
 
+
 exports.deleteProductByID = async (req, res, next) => {
   const idProduct = req.params.id;
 
@@ -99,3 +105,35 @@ exports.deleteProductByID = async (req, res, next) => {
     data: response,
   });
 };
+
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) {
+    cb(null, true);
+  } else {
+    cb(new AppError('400', 'Not an image !!! Please try again'), false);
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+exports.uploadProductImage = upload.fields([{ name: 'image', maxCount: 1 }]);
+exports.resizeProductImage = catchAsync(async (req, res, next) => {
+  if (!req.files.image) return next();
+  //Cover image
+  req.body.image = `product-${req.params.id}-${Date.now()}.jpeg`;
+  await sharp(req.files.image[0].buffer)
+    .resize(1426, 2100)
+    .toFormat('jpeg')
+    .jpeg({ quality: 98 })
+    .toFile(`public/img/products/${req.body.image}`);
+  next();
+});
+
+exports.updateProduct = factory.updateOne(productModel);
+exports.getAllProducts = factory.getAll(productModel);
+
