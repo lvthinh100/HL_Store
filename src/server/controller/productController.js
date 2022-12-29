@@ -88,3 +88,14 @@ exports.searchProd = async (req, res, next) => {
     data: 'Search value day ne',
   });
 };
+
+exports.deleteProductByID = async (req, res, next) => {
+  const idProduct = req.params.id;
+
+  const response = await productModel.findByIdAndDelete(idProduct);
+
+  res.status(200).json({
+    status: 'success',
+    data: response,
+  });
+};
