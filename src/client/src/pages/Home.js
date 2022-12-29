@@ -1,22 +1,13 @@
-import {
-  Button,
-  Grid,
-  Typography,
-  Box,
-  Stack,
-  Container,
-  Tabs,
-  Tab,
-} from "@mui/material";
-import Carousel from "react-material-ui-carousel";
-
 import React from "react";
-import { useState } from "react";
+import { Link } from "react-router-dom";
+
+import { Button, Grid, Typography, Box, Stack, Container } from "@mui/material";
+import Carousel from "react-material-ui-carousel";
 
 import { StyledArrBox, StyledArrPaper, StyledButton } from "./HomeStyle";
 import ProductCard from "../components/ProductCard";
-import { TabPanel } from "../components/Tab";
 import VoucherTimer from "../components/VoucherTimer";
+import HomeTab from "../components/Sections/HomeTab";
 
 const Headline = function ({ children, subtitle, title, theme }) {
   const color = theme === "light" ? "#fff" : "inherit";
@@ -39,10 +30,6 @@ const Headline = function ({ children, subtitle, title, theme }) {
 };
 
 export default function Home() {
-  const [curTab, setCurTab] = useState(0);
-  const changeTabHandler = function (event, value) {
-    setCurTab(value);
-  };
   return (
     <Box>
       <Container>
@@ -60,6 +47,8 @@ export default function Home() {
                 <Box>
                   <Button
                     variant="contained"
+                    LinkComponent={Link}
+                    to="/products"
                     sx={{
                       boxShadow: 10,
                       padding: "15px 40px",
@@ -198,39 +187,16 @@ export default function Home() {
         </Container>
       </Box>
 
-      {/* Our Product */}
-      <Container sx={{ marginTop: "50px" }}>
-        <Stack direction="column" alignItems="center" margin="0 auto">
-          <Typography variant="h2">Our Product</Typography>
-          <Tabs value={curTab} onChange={changeTabHandler}>
-            <Tab label="Winter" value={0} />
-            <Tab label="Underwear" value={1} />
-            <Tab label="Casual" value={2} />
-            <Tab label="Sport" value={3} />
-          </Tabs>
-        </Stack>
+      <HomeTab />
 
-        {[0, 1, 2, 3].map((el) => (
-          <TabPanel value={curTab} index={el} key={el}>
-            <Grid container spacing={3}>
-              {[0, 1, 2, 3, 4, 5, 6, 7].map((el) => (
-                <Grid item xs={3} key={el}>
-                  <ProductCard title={el} />
-                </Grid>
-              ))}
-            </Grid>
-          </TabPanel>
-        ))}
-
-        <Box>
-          <StyledButton
-            sx={{ display: "block", margin: "10px auto" }}
-            variant="contained"
-          >
-            SEE MORE
-          </StyledButton>
-        </Box>
-      </Container>
+      <Box>
+        <StyledButton
+          sx={{ display: "block", margin: "10px auto" }}
+          variant="contained"
+        >
+          SEE MORE
+        </StyledButton>
+      </Box>
 
       {/* Voucher out now */}
       <Container>

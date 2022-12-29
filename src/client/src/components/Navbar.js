@@ -1,14 +1,6 @@
 import React from "react";
-import {
-  Stack,
-  IconButton,
-  Badge,
-  Box,
-  Slide,
-  useScrollTrigger,
-  AppBar,
-} from "@mui/material";
-import { Link } from "react-router-dom";
+import { Stack, IconButton, Badge, AppBar } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import Person4OutlinedIcon from "@mui/icons-material/Person4Outlined";
 import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
 import { Container } from "@mui/system";
@@ -17,6 +9,7 @@ import { Container } from "@mui/system";
 import UserMenu from "./Auth/UserMenu";
 import Navigation from "./Navigation";
 import { ReactComponent as Logo } from "../logo.svg";
+import Cart from "./Cart";
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { appActions } from "../redux/slices/appSlice";
@@ -25,6 +18,7 @@ import { NAVBAR } from "../config";
 
 export default function Navbar() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -46,7 +40,7 @@ export default function Navbar() {
         right: 0,
         width: "100%",
         backgroundColor: (theme) => theme.palette.background.paper,
-        zIndex: 10,
+        zIndex: 1000,
       }}
     >
       <Container>
@@ -61,11 +55,7 @@ export default function Navbar() {
           </Link>
           <Navigation theme="dark" />
           <Stack direction="row">
-            <IconButton>
-              <Badge color="secondary" badgeContent={0} showZero>
-                <LocalMallOutlinedIcon />
-              </Badge>
-            </IconButton>
+            <Cart />
 
             <IconButton onClick={handleClickUser}>
               <Person4OutlinedIcon />
