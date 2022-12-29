@@ -14,6 +14,11 @@ router.get('/orders', authController.protect, userController.getUserOrders);
 
 router.get('/:id', userController.getUser);
 router.patch('/:id', userController.updateUser);
-router.post('/addCart', authController.protect, userController.addCart);
+router.post(
+    '/addCart', 
+    authController.protect, 
+    authController.restrictTo('user'),
+    userController.addCart
+);
 
 module.exports = router;

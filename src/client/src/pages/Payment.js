@@ -1,7 +1,18 @@
 import React from "react";
-import { Grid, Container, Typography, Divider, Box } from "@mui/material";
+import {
+  Grid,
+  Container,
+  Typography,
+  Divider,
+  Box,
+  List,
+  ListItem,
+  TextField,
+  Stack,
+} from "@mui/material";
 
 import PaymentForm from "../components/PaymentForm";
+import { CartProductDetail } from "../components/CartProduct";
 
 export default function Payment() {
   return (
@@ -21,7 +32,59 @@ export default function Payment() {
           flexItem
         />
         <Grid item xs={5}>
-          <Typography variant="h3">Cart</Typography>
+          <Box sx={{ ml: "20px" }}>
+            <Typography variant="h3">Cart</Typography>
+            <List>
+              <ListItem sx={{ padding: "10px 0" }}>
+                <CartProductDetail />
+              </ListItem>
+              <ListItem sx={{ padding: "10px 0" }}>
+                <CartProductDetail />
+              </ListItem>
+              <ListItem sx={{ padding: "10px 0" }}>
+                <CartProductDetail />
+              </ListItem>
+            </List>
+            <TextField
+              variant="outlined"
+              fullWidth
+              placeholder="Discount Code"
+            />
+            <Divider sx={{ my: "20px" }} />
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Typography>Temporarily Amount: </Typography>
+              <Typography>250.000 </Typography>
+            </Stack>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Typography>Discount: </Typography>
+              <Typography>50.000 </Typography>
+            </Stack>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Typography>Shipping fee: </Typography>
+              <Typography>250.000 </Typography>
+            </Stack>
+            <Divider sx={{ my: "20px" }} />
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Typography>Total Amount: </Typography>
+              <Typography>250.000 </Typography>
+            </Stack>
+          </Box>
         </Grid>
       </Grid>
     </Container>
