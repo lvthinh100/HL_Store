@@ -8,12 +8,16 @@ const router = express.Router();
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
 router.get('/logout', authController.logout);
-
-//request => req     req.testValue=9999         ------req--------------
 router.get('/orders', authController.protect, userController.getUserOrders);
-
+router.patch('/updateCart', authController.protect, userController.updateCart);
+router.get('/getCart', authController.protect, userController.getCart);
+router.post(
+  '/addCart',
+  authController.protect,
+  authController.restrictTo('user'),
+  userController.addCart
+);
 router.get('/:id', userController.getUser);
 router.patch('/:id', userController.updateUser);
-router.post('/addCart', authController.protect, userController.addCart);
 
 module.exports = router;

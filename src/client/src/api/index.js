@@ -25,4 +25,30 @@ export const addressAPI = {
   },
 };
 
-//Code do qua lam lai di
+export const createProduct = async (data) =>
+  axios.post(`${url}/api/products`, data);
+
+export const updateProduct = async (id, data) =>
+  axios.patch(`${url}/api/products/${id}`, data);
+
+export const getAllProducts = async () => axios.get(`${url}/api/products`);
+export const getProductDetail = async (id) =>
+  axios.get(`${url}/api/products/${id}`);
+export const postComment = async (data) =>
+  axios.post(`${url}/api/comments`, data, { withCredentials: true });
+export const updateCart = async (cart) =>
+  axios.patch(
+    `${url}/api/users/updateCart`,
+    { cart },
+    { withCredentials: true }
+  );
+
+export const getCart = async () =>
+  axios.get(`${url}/api/users/getCart`, { withCredentials: true });
+
+export const createOrder = async (shippingInfo) =>
+  axios.post(`${url}/api/orders/`, shippingInfo, {
+    withCredentials: true,
+  });
+export const getOrders = async () =>
+  axios.get(`${url}/api/orders`, { withCredentials: true });

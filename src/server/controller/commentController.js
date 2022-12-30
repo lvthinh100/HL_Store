@@ -1,4 +1,5 @@
 const commentModel = require('../model/commentModel');
+const catchAsync = require('../utils/catchAsync');
 
 exports.getComments = async (req, res) => {
   const data = await commentModel.find();
@@ -9,15 +10,16 @@ exports.getComments = async (req, res) => {
   });
 };
 
-exports.createComments = async (req, res) => {
+exports.createComments = catchAsync(async (req, res) => {
   const data = req.body;
-  const response = await commentModel.create(data);
+  const { user } = req;
+  const response = await commentModel.create({ ...data, userName: user.name });
 
   res.status(200).json({
     status: 'success',
     data: response,
   });
-};
+});
 
 exports.deleteComments = async (req, res) => {
   const data = req.body;
@@ -40,5 +42,14 @@ exports.updateComments = async (req, res) => {
   res.status(200).json({
     status: 'success',
     data: docs,
+  });
+};
+exports.addComments = async (req, res) => {
+  const data = req.body;
+  const response = await commentModel.create(data);
+
+  res.status(200).json({
+    status: 'success',
+    data: response,
   });
 };

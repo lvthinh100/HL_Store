@@ -48,6 +48,11 @@ export default function RHFRadioGroup({
       render={({ field, fieldState: { error } }) => (
         <div>
           <FormLabel>{label}</FormLabel>
+          {error && (
+            <Typography sx={{ color: (theme) => theme.palette.error.main }}>
+              {error?.message}
+            </Typography>
+          )}
           <RadioGroup {...field} {...other}>
             {options.map((option, index) => (
               <StyledInput

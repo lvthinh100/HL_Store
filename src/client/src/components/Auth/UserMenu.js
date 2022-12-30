@@ -2,21 +2,24 @@ import React from "react";
 import { Menu, MenuItem, Avatar, Divider, ListItemIcon } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../redux/slices/authSlice";
 import { appActions } from "../../redux/slices/appSlice";
 
 //API
 import { logout } from "../../api";
+import { useNavigate } from "react-router-dom";
+import { cartActions } from "../../redux/slices/cartSlice";
 
 //Redux
 
 export default function UserMenu({ anchorEl, open, handleClose, user }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isAdmin = useSelector((state) => state.auth.user).role === "admin";
   const logoutHandler = async () => {
     try {
       const response = await logout();
-      console.log(response);
       if (response.data.status === "success") {
         dispatch(authActions.logout());
         dispatch(
@@ -25,6 +28,7 @@ export default function UserMenu({ anchorEl, open, handleClose, user }) {
             message: "Log out success fully",
           })
         );
+        dispatch(cartActions.clearCart());
       }
     } catch (err) {
       dispatch(
@@ -74,9 +78,13 @@ export default function UserMenu({ anchorEl, open, handleClose, user }) {
       <MenuItem>
         <Avatar /> {user.name}
       </MenuItem>
-      <MenuItem>
-        <Avatar /> My account
-      </MenuItem>
+      <MenuItem onClick={() => navigate("/orders")}>My Orders</MenuItem>
+      {isAdmin && (
+        <MenuItem onClick={() => navigate("/products-manager")}>
+          HL's Products
+        </MenuItem>
+      )}
+
       <Divider />
       <MenuItem onClick={logoutHandler}>
         <ListItemIcon>

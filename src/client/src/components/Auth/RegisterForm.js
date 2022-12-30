@@ -71,7 +71,13 @@ export default function LoginForm({ onChangeTab }) {
           message: `account create successfully with email: ${data.email}`,
         })
       );
-      dispatch(authActions.setUser(response.data.data.user));
+      dispatch(
+        authActions.setUser({
+          user: response.data.data.user,
+          tokenExpires: response.data.tokenExpires,
+          token: response.data.token,
+        })
+      );
     }
   };
 
