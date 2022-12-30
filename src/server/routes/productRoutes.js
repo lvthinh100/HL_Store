@@ -20,6 +20,7 @@ router.patch(
   productController.increaseProductLike
 );
 router.get('/:id', productController.getProductById);
+router.patch('/updateProduct/:id', authController.protect, authController.restrictTo('admin'), productController.updateProduct);
 router.get('/search/:key', productController.searchProduct);
 router.get('/searchCategory/:key', productController.searchCategoryProd);
 // router.get('/searchRate/hightRate', productController.searchRate);
