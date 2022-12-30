@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const orderSchema = new mongoose.Schema({
   products: [
     {
-      nameProduct: {
+      id: String,
+      name: {
         type: String,
         require: true,
       },
@@ -11,9 +12,10 @@ const orderSchema = new mongoose.Schema({
         type: String,
         require: true,
       },
+      image: String,
       discount: {
         type: Number,
-        require: false,
+        default: 0,
       },
       price: {
         type: Number,
@@ -61,10 +63,14 @@ const orderSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     path: 'User',
   },
-  voucher: {
-    type: mongoose.Schema.ObjectId,
-    path: 'Voucher',
+  createdAt: {
+    type: Date,
+    default: Date.now(),
   },
+  // voucher: {
+  //   type: mongoose.Schema.ObjectId,
+  //   path: 'Voucher',
+  // },
 });
 
 module.exports = mongoose.model('Order', orderSchema);

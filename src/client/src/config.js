@@ -8,6 +8,10 @@ export const NAVBAR = {
   DRAWER_WIDTH: 320,
 };
 
+export const DEFAULT_VALUE = {
+  SHIPPING_FEE: 25000,
+};
+
 export const REGEX = {
   PHONE:
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,

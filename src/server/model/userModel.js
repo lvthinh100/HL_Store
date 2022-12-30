@@ -46,11 +46,11 @@ const userSchema = new mongoose.Schema(
     },
     cart: [
       {
-        productId: {
+        id: {
           type: String,
           required: true,
         },
-        productName: {
+        name: {
           type: String,
           required: true,
         },
@@ -58,7 +58,7 @@ const userSchema = new mongoose.Schema(
           type: Number,
           require: true,
         },
-        img: {
+        image: {
           type: String,
           default: '/img/model.jpg',
         },
@@ -66,6 +66,7 @@ const userSchema = new mongoose.Schema(
           type: String,
           enum: ['S', 'M', 'L', 'XL'],
         },
+        quantity: Number,
       },
     ],
     passwordChangedAt: Date,

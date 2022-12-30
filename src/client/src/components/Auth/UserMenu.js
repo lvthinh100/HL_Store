@@ -9,6 +9,7 @@ import { appActions } from "../../redux/slices/appSlice";
 //API
 import { logout } from "../../api";
 import { useNavigate } from "react-router-dom";
+import { cartActions } from "../../redux/slices/cartSlice";
 
 //Redux
 
@@ -19,7 +20,6 @@ export default function UserMenu({ anchorEl, open, handleClose, user }) {
   const logoutHandler = async () => {
     try {
       const response = await logout();
-      console.log(response);
       if (response.data.status === "success") {
         dispatch(authActions.logout());
         dispatch(
@@ -28,6 +28,7 @@ export default function UserMenu({ anchorEl, open, handleClose, user }) {
             message: "Log out success fully",
           })
         );
+        dispatch(cartActions.clearCart());
       }
     } catch (err) {
       dispatch(

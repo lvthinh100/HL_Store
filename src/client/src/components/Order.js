@@ -9,15 +9,16 @@ import {
   Button,
   Stack,
   Modal,
-  Menu,
   MenuItem,
   Select,
   Divider,
 } from "@mui/material";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { SERVER_URL } from "../config";
+import formatDate from "../utils/dateFormat";
 
-const OrderProduct = function () {
+const OrderProduct = function ({ product }) {
   return (
     <Grid
       container
@@ -29,24 +30,23 @@ const OrderProduct = function () {
           width="100%"
           alt="model"
           component="img"
-          src="http://localhost:3000/img/model.jpg"
+          src={`${SERVER_URL.PRODUCT_IMAGE}/${product.image}`}
           sx={{ objectFit: "contain" }}
         />
       </Grid>
       <Grid item xs={10}>
         <Box>
           <Typography fontSize={"12px"} fontWeight="bold" whiteSpace="pre-line">
-            Modal Ultra Warm men's shirt - warm and breathable to wear
-            aaaaaaaaaaaa
+            {product.name}
           </Typography>
           <Typography fontSize={"12px"} variant="subtitle1">
-            XL
+            Size: {product.size}
           </Typography>
           <Typography fontSize={"12px"} fontWeight="bold">
-            250.000đ
+            {product.price.toLocaleString()}đ
           </Typography>
           <Typography fontSize={"12px"} margin="">
-            x10
+            Quantity: x{product.quantity}
           </Typography>
         </Box>
       </Grid>
@@ -54,7 +54,7 @@ const OrderProduct = function () {
   );
 };
 
-const OrderStatus = function () {
+const OrderStatus = function ({ status }) {
   return (
     <Stack direction="row" alignItems="center">
       <Typography>Status: </Typography>
@@ -64,7 +64,7 @@ const OrderStatus = function () {
           fontWeight: "bold",
         }}
       >
-        DELIVERING
+        {status}
       </Typography>
     </Stack>
   );
@@ -82,38 +82,47 @@ const style = {
   p: 4,
 };
 
-export default function Order() {
+export default function Order({ order }) {
   const [open, setOpen] = useState(false);
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
 
   const user = useSelector((state) => state.auth.user);
   const isAdmin = user.role === "admin";
+
   return (
     <Fragment>
-      <Card sx={{ mb: 2, p: 3 }}>
+      <Card sx={{ mb: 2, p: 3, border: "1px solid #333" }}>
         <Stack
           direction="row"
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography fontWeight="bold">Order id: MADKLSJCB!12</Typography>
-          <OrderStatus />
+          <Typography fontWeight="bold">Order id: {order._id}</Typography>
+          <OrderStatus status={order.status} />
         </Stack>
         <List sx={{ p: 0, "& li": { p: 0 } }}>
-          <ListItem>
-            <OrderProduct />
-          </ListItem>
-          <ListItem>
-            <OrderProduct />
-          </ListItem>
+          {order.products.map((prod) => (
+            <ListItem key={prod.id}>
+              <OrderProduct product={prod} />
+            </ListItem>
+          ))}
         </List>
-        <Typography sx={{ my: 2 }}>Total Amount: 250.000đ</Typography>
+        <Typography sx={{ my: 2 }}>
+          Total Amount: {order.totalAmount.toLocaleString()}đ
+        </Typography>
         <Stack direction="row" alignItems="center">
-          <Button variant="contained">RECEIVED</Button>
-          <Button variant="outlined" sx={{ ml: 1 }} onClick={openModal}>
+          {!isAdmin && (
+            <Button sx={{ mr: 1 }} variant="contained">
+              SUCCESS
+            </Button>
+          )}
+          <Button variant="outlined" onClick={openModal}>
             SHIPPING INFORMATION
           </Button>
+          <Box sx={{ ml: "auto" }}>
+            <Typography>{formatDate(order.createdAt)}</Typography>
+          </Box>
         </Stack>
       </Card>
       <Modal open={open} onClose={closeModal}>
@@ -122,27 +131,27 @@ export default function Order() {
           <Grid container spacing={1}>
             <Grid item xs={6}>
               <Typography fontWeight="bold">Name</Typography>
-              <Typography> Le Van Thinh</Typography>
+              <Typography>{order.nameCustomer}</Typography>
             </Grid>
             <Grid item xs={6}>
               <Typography fontWeight="bold">Phone</Typography>
-              <Typography> 0796792539</Typography>
+              <Typography> {order.phone}</Typography>
             </Grid>
             <Grid item xs={12}>
               <Typography fontWeight="bold">Email</Typography>
-              <Typography> levanthinh2509@gmail.com</Typography>
+              <Typography> {order.email}</Typography>
             </Grid>
             <Grid item xs={12}>
               <Typography fontWeight="bold">Address</Typography>
-              <Typography> Kp Long hai bac P.Xuan yen</Typography>
+              <Typography> {order.address}</Typography>
             </Grid>
             <Grid item xs={12}>
               <Typography fontWeight="bold">Note</Typography>
-              <Typography>Please dont send at work</Typography>
+              <Typography>{order.note}</Typography>
             </Grid>
             <Grid item xs={12} sx={{ mb: 2 }}>
               <Typography fontWeight="bold">Status</Typography>
-              {!isAdmin && <Typography>Delivering...</Typography>}
+              {!isAdmin && <Typography>{order.status}</Typography>}
               {isAdmin && (
                 <Select sx={{ width: "100px", height: "40px" }}>
                   <MenuItem>UNCONFIRMED</MenuItem>

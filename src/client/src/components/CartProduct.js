@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Grid,
   Card,
@@ -7,51 +7,81 @@ import {
   Stack,
   Select,
   MenuItem,
-  ButtonGroup,
   IconButton,
   Box,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Counter from "./Counter";
 
-export function CartProductSmall() {
+import { SERVER_URL } from "../config";
+import { useDispatch } from "react-redux";
+import { cartActions } from "../redux/slices/cartSlice";
+
+export function CartProductSmall({ cartItem }) {
+  const dispatch = useDispatch();
+
+  const removeItem = () => {
+    dispatch(cartActions.removeItem({ id: cartItem.id, size: cartItem.size }));
+  };
+
   return (
     <Grid container>
       <Grid item xs={3}>
         <CardMedia
           height="120px"
           width="100%"
-          alt="model"
+          alt={`${cartItem.name}`}
           component="img"
-          src="http://localhost:3000/img/model.jpg"
+          src={`${SERVER_URL.PRODUCT_IMAGE}/${cartItem.image}`}
           sx={{ objectFit: "contain" }}
         />
       </Grid>
       <Grid item xs={8}>
         <Box>
           <Typography fontSize={"12px"} fontWeight="bold" whiteSpace="pre-line">
-            Modal Ultra Warm men's shirt - warm and breathable to wear
-            aaaaaaaaaaaa
+            {cartItem.name}
           </Typography>
           <Typography fontSize={"12px"} variant="subtitle1">
-            XL
+            {cartItem.size}
           </Typography>
           <Typography fontSize={"12px"} fontWeight="bold">
-            250.000đ
+            {cartItem.price.toLocaleString()}đ
           </Typography>
           <Typography fontSize={"12px"} margin="">
-            x10
+            x{cartItem.quantity}
           </Typography>
         </Box>
       </Grid>
       <Grid item xs={1}>
-        <CloseIcon fontSize="small" />
+        <IconButton onClick={removeItem}>
+          <CloseIcon fontSize="small" />
+        </IconButton>
       </Grid>
     </Grid>
   );
 }
 
-export function CartProductDetail({ product }) {
+export function CartProductDetail({ cartItem, index }) {
+  const curSize = cartItem.inStock.findIndex((s) => s.name === cartItem.size);
+  const [size, setSize] = useState(curSize);
+  const dispatch = useDispatch();
+
+  const sizeChangeHandler = (e) => {
+    setSize(e.target.value);
+    dispatch(
+      cartActions.updateItemSize({
+        index,
+        size: cartItem.inStock[e.target.value].name,
+      })
+    );
+  };
+  const quantityChangeHandler = (newValue) => {
+    dispatch(cartActions.updateItemQuantity({ index, quantity: newValue }));
+  };
+  const removeItem = () => {
+    dispatch(cartActions.removeItem({ id: cartItem.id, size: cartItem.size }));
+  };
+
   return (
     <Card sx={{ width: "100%" }}>
       <Grid container>
@@ -61,7 +91,7 @@ export function CartProductDetail({ product }) {
             width="100%"
             alt="model"
             component="img"
-            src="http://localhost:3000/img/model.jpg"
+            src={`${SERVER_URL.PRODUCT_IMAGE}/${cartItem.image}`}
             sx={{ objectFit: "scale-down" }}
           />
         </Grid>
@@ -73,27 +103,38 @@ export function CartProductDetail({ product }) {
             sx={{ padding: 1 }}
           >
             <Typography fontSize={"14px"} fontWeight="bold" display="block">
-              Modal Ultra Warm men's shirt - warm and breathable to wear
+              {cartItem.name}
             </Typography>
             <Stack>
-              <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
+              <Typography>Size: </Typography>
+              <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
                 <Select
+                  value={size}
+                  onChange={sizeChangeHandler}
                   sx={{
-                    width: 40,
+                    width: 60,
                     height: 30,
+                    fontSize: "10px",
                     "& .MuiSvgIcon-root": { fontSize: "15px" },
                   }}
                 >
-                  <MenuItem fontSize="12px">S</MenuItem>
-                  <MenuItem fontSize="12px">M</MenuItem>
-                  <MenuItem fontSize="12px">L</MenuItem>
-                  <MenuItem fontSize="12px">XL</MenuItem>
+                  {cartItem.inStock.map((s, i) => (
+                    <MenuItem key={s.name} value={i} fontSize="12px">
+                      {s.name}
+                    </MenuItem>
+                  ))}
                 </Select>
                 <Typography variant="subtitle1" fontWeight="light" ml="10px">
-                  (In stock: 10)
+                  (In stock: {cartItem.inStock[size].quantity})
                 </Typography>
               </Stack>
-              <Counter />
+              <Typography>Quantity: </Typography>
+              <Counter
+                min={1}
+                max={cartItem.inStock[size].quantity}
+                start={cartItem.quantity}
+                onChange={quantityChangeHandler}
+              />
             </Stack>
           </Stack>
         </Grid>
@@ -105,10 +146,10 @@ export function CartProductDetail({ product }) {
             justifyContent="space-between"
             sx={{ mr: 1 }}
           >
-            <IconButton>
+            <IconButton onClick={removeItem}>
               <CloseIcon fontSize="small" />
             </IconButton>
-            <Typography>120.000đ</Typography>
+            <Typography>{cartItem.price.toLocaleString()}đ</Typography>
           </Stack>
         </Grid>
       </Grid>
