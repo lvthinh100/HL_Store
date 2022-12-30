@@ -1,5 +1,4 @@
 import React from "react";
-import { forwardRef } from "react";
 import { Button, Grid, Typography } from "@mui/material";
 
 import * as yup from "yup";
@@ -14,8 +13,15 @@ import RHFRadioGroup from "./hook-form/RHFRadioGroup";
 import FormProvider from "./hook-form/FormProvider";
 import useLocationInfo from "../hooks/useLocationInfo";
 import { REGEX } from "../config";
+import { useDispatch, useSelector } from "react-redux";
+import { DEFAULT_VALUE } from "../config";
+import { createOrder } from "../api";
+import { appActions } from "../redux/slices/appSlice";
+import { cartActions } from "../redux/slices/cartSlice";
 
 export default function PaymentForm() {
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const dispatch = useDispatch();
   const { provinces, districts, wards, fetchDistrict, fetchWard } =
     useLocationInfo();
   const schema = yup.object().shape({
@@ -49,15 +55,43 @@ export default function PaymentForm() {
     defaultValues,
   });
   const { handleSubmit, register, setValue, getValues } = methods;
-  const onSubmitForm = (data) => {
+  const onSubmitForm = async (data) => {
     const [{ label: province }] = provinces.filter(
       (el) => el.value === data.province
     );
     const [{ label: district }] = districts.filter(
       (el) => +el.value === +data.district
     );
-    const fullAdr = `${data.ward}, ${district}, Tỉnh ${province}`;
-    console.log(fullAdr);
+    const fullAdr = `${data.address} ${data.ward}, ${district}, Tỉnh ${province}`;
+    const total =
+      cartItems.reduce((total, cur) => total + cur.quantity * cur.price, 0) +
+      DEFAULT_VALUE.SHIPPING_FEE;
+    const shippingInfo = {
+      name: data.name,
+      phone: data.phone,
+      email: data.email,
+      address: fullAdr,
+      method: data.method,
+      note: data.note,
+      total,
+    };
+    try {
+      await createOrder(shippingInfo);
+      dispatch(cartActions.clearCart());
+      dispatch(
+        appActions.showNotification({
+          variant: "success",
+          message: "Create order successfully",
+        })
+      );
+    } catch (err) {
+      dispatch(
+        appActions.showNotification({
+          variant: "error",
+          message: "Something wrong happen when ordering",
+        })
+      );
+    }
   };
 
   const onSelectProvince = (e) => {
@@ -131,8 +165,8 @@ export default function PaymentForm() {
             name="method"
             label=""
             options={[
-              { value: "momo", label: "COD: Cash on delivery" },
-              { value: "code", label: "Online: Pay with MOMO" },
+              { value: "cod", label: "COD: Cash on delivery" },
+              { value: "momo", label: "Online: Pay with MOMO" },
             ]}
           />
         </Grid>
@@ -143,3 +177,12 @@ export default function PaymentForm() {
     </FormProvider>
   );
 }
+
+/*
+"name": "Le Van Thinh"
+"address": "18 Duong Lý thường kiệt, Xã Đất Cuốc, Huyện Bắc Tân Uyên, Tỉnh Bình Dương"
+"email": "levanthinh2509@gmail.com"
+"method": "momo"
+"note": "Send me at 11h pm"
+"phone": "0796792539"
+*/

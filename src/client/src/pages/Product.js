@@ -22,6 +22,10 @@ import Comment from "../components/Comment";
 import { getProductDetail } from "../api";
 import { SERVER_URL } from "../config";
 import { defaultEqualityCheck } from "reselect";
+import { useDispatch } from "react-redux";
+import { cartActions } from "../redux/slices/cartSlice";
+import useAuth from "../hooks/useAuth";
+import { appActions } from "../redux/slices/appSlice";
 
 const FieldHeader = styled(Typography)({
   fontWeight: "Bold",
@@ -45,6 +49,9 @@ export default function Product() {
   const { id } = useParams();
   const [size, setSize] = useState(0);
   const [detail, setDetail] = useState({});
+  const [quantity, setQuantity] = useState(1);
+  const { user } = useAuth();
+  const dispatch = useDispatch();
 
   const postCommentHandler = function (newComment) {
     setDetail({
@@ -52,12 +59,24 @@ export default function Product() {
       comments: [...detail.comments, newComment],
     });
   };
+  const addCartHandler = function () {
+    if (!user) return dispatch(appActions.showAuthModal());
+    const cartItem = {
+      id: detail._id,
+      name: detail.name,
+      size: detail.size[size].name,
+      price: detail.price,
+      image: detail.image,
+      quantity,
+      inStock: detail.size,
+    };
+    dispatch(cartActions.addItems(cartItem));
+  };
 
   useEffect(() => {
     const getDetail = async () => {
       const { data } = await getProductDetail(id);
       setDetail(data.data);
-      console.log(data.data);
     };
     getDetail();
   }, [id]);
@@ -106,11 +125,16 @@ export default function Product() {
             In Stock: {detail.size ? detail.size[size].quantity : 0}
           </Typography>
           <FieldHeader variant="subtitle1">Quantity:</FieldHeader>
-          <Counter />
+          <Counter
+            min={1}
+            max={detail.size ? detail.size[size].quantity : 0}
+            onChange={(newValue) => setQuantity(newValue)}
+          />
           <Box sx={{ my: 2 }}>
             <Button
               variant="contained"
               sx={{ p: "10px 50px", textTransform: "uppercase" }}
+              onClick={addCartHandler}
             >
               Add to cart
             </Button>

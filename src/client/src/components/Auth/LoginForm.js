@@ -23,6 +23,7 @@ import useAJAX from "../../hooks/useAJAX";
 
 //API
 import { login } from "../../api";
+import { getCartData } from "../../redux/slices/cartSlice";
 
 export default function LoginForm({ onChangeTab }) {
   const [error, loading, loginHandler] = useAJAX(login);
@@ -51,7 +52,6 @@ export default function LoginForm({ onChangeTab }) {
   const { handleSubmit } = methods;
   const submitLoginForm = async (data) => {
     const response = await loginHandler(data.email, data.password);
-    console.log(response);
     if (response.data.status === "success") {
       dispatch(
         appActions.showNotification({
@@ -66,6 +66,7 @@ export default function LoginForm({ onChangeTab }) {
           token: response.data.token,
         })
       );
+      dispatch(getCartData());
     }
   };
 

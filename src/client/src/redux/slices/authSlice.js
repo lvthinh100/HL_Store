@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { cartActions, getCartData } from "./cartSlice";
 
 const initialState = {
   user: null,
@@ -46,6 +47,7 @@ export const retrieveUser = function () {
       return;
     }
     dispatch(authActions.setUser({ user, tokenExpires: outDated, token }));
+    dispatch(getCartData());
   };
   //end
 };

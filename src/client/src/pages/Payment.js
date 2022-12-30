@@ -13,8 +13,15 @@ import {
 
 import PaymentForm from "../components/PaymentForm";
 import { CartProductDetail } from "../components/CartProduct";
+import { useSelector } from "react-redux";
+import { DEFAULT_VALUE } from "../config";
 
 export default function Payment() {
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const tempAmount = cartItems.reduce(
+    (total, cur) => total + cur.quantity * cur.price,
+    0
+  );
   return (
     <Container>
       <Grid container sx={{ padding: "40px 0" }}>
@@ -35,15 +42,11 @@ export default function Payment() {
           <Box sx={{ ml: "20px" }}>
             <Typography variant="h3">Cart</Typography>
             <List>
-              <ListItem sx={{ padding: "10px 0" }}>
-                <CartProductDetail />
-              </ListItem>
-              <ListItem sx={{ padding: "10px 0" }}>
-                <CartProductDetail />
-              </ListItem>
-              <ListItem sx={{ padding: "10px 0" }}>
-                <CartProductDetail />
-              </ListItem>
+              {cartItems.map((item, index) => (
+                <ListItem key={index} sx={{ padding: "10px 0" }}>
+                  <CartProductDetail cartItem={item} index={index} />
+                </ListItem>
+              ))}
             </List>
             <TextField
               variant="outlined"
@@ -57,7 +60,7 @@ export default function Payment() {
               justifyContent="space-between"
             >
               <Typography>Temporarily Amount: </Typography>
-              <Typography>250.000 </Typography>
+              <Typography>{tempAmount.toLocaleString()} </Typography>
             </Stack>
             <Stack
               direction="row"
@@ -65,7 +68,7 @@ export default function Payment() {
               justifyContent="space-between"
             >
               <Typography>Discount: </Typography>
-              <Typography>50.000 </Typography>
+              <Typography>0 </Typography>
             </Stack>
             <Stack
               direction="row"
@@ -73,7 +76,9 @@ export default function Payment() {
               justifyContent="space-between"
             >
               <Typography>Shipping fee: </Typography>
-              <Typography>250.000 </Typography>
+              <Typography>
+                {DEFAULT_VALUE.SHIPPING_FEE.toLocaleString()}{" "}
+              </Typography>
             </Stack>
             <Divider sx={{ my: "20px" }} />
             <Stack
@@ -82,7 +87,9 @@ export default function Payment() {
               justifyContent="space-between"
             >
               <Typography>Total Amount: </Typography>
-              <Typography>250.000 </Typography>
+              <Typography>
+                {(tempAmount + DEFAULT_VALUE.SHIPPING_FEE).toLocaleString()}{" "}
+              </Typography>
             </Stack>
           </Box>
         </Grid>
