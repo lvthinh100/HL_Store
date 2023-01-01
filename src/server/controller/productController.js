@@ -40,7 +40,7 @@ exports.createProducts = async (req, res) => {
 //   });
 // };
 
-exports.updateProduct = async (req, res) => {
+exports.updateProduct = catchAsync(async (req, res) => {
   const data = req.body;
   const { id } = req.params;
   const docs = await productModel.findByIdAndUpdate(id, data, {
@@ -51,10 +51,10 @@ exports.updateProduct = async (req, res) => {
     status: 'success',
     data: docs,
   });
-};
+});
 
 //Lay thong tin product bằng ID product
-exports.getProductById = async (req, res, next) => {
+exports.getProductById = catchAsync(async (req, res, next) => {
   const productId = req.params.id;
   const data = await productModel.findById(productId).populate({
     path: 'comments',
@@ -65,7 +65,7 @@ exports.getProductById = async (req, res, next) => {
     status: 'success',
     data,
   });
-};
+});
 
 exports.increaseProductLike = async (req, res, next) => {
   //
@@ -91,7 +91,9 @@ exports.increaseProductLike = async (req, res, next) => {
 exports.searchProduct = async (req, res, next) => {
   const { key } = req.params;
 
-  const data = await productModel.find({ name: key });
+  const data = await productModel.find({
+    name: { $regex: key, $options: 'i' },
+  });
   res.status(200).json({
     status: 'success',
     data,
@@ -118,35 +120,13 @@ exports.searchCategoryProd = async (req, res, next) => {
   });
 };
 
-// exports.searchRate = async (req, res, next) => {
-//   // const data = await productModel.find({ category: "underwear" });
-//   // data[1] = await productModel.find({ category: "winter" });
-
-//   // const productId = req.params.id;
-//   const sl = 6;
-//   const data = await commentModel.find({ rating: 5 });
-//   if (data.length < sl) {
-//     for (let i = 4; i > 0; i -= 1) {
-//       cmp_data = await commentModel.find({ rating: i });
-//       for (let j = 0; j < cmp_data.length; j++) {
-//         data[data.length] = cmp_data[j];
-//         if (data.length >= sl) break;
-//       }
-//       if (data.length >= sl) break;
-//     }
-//   }
-
-//   const data_prod = await productModel.find({ _id: data[0].product });
-//   for (let i = 1; i < data.length; i++) {
-//     data_prod[data_prod.length] = await productModel.find({
-//       _id: data[i].product,
-//     });
-//   }
-//   res.status(200).json({
-//     status: 'success',
-//     data: data_prod,
-//   });
-// };
+exports.searchRate = async (req, res, next) => {
+  const data = await productModel.find().sort('-ratingsAverage').limit(6);
+  res.status(200).json({
+    status: 'success',
+    data,
+  });
+};
 
 const multerStorage = multer.memoryStorage();
 
