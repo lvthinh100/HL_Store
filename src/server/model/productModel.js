@@ -68,6 +68,18 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    ratingsAverage: {
+      type: Number,
+      required: true,
+      default: 0,
+      min: [1, 'rating must above 1.0'],
+      max: [5, 'rating must below 5.0'],
+      set: (curVal) => +curVal.toFixed(1),
+    },
+    ratingsQuantity: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     toJSON: { virtuals: true },

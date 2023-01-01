@@ -19,11 +19,10 @@ router.patch(
   authController.restrictTo('admin'),
   productController.increaseProductLike
 );
+router.get('/highRate', productController.searchRate);
 router.get('/:id', productController.getProductById);
-router.patch('/updateProduct/:id', authController.protect, authController.restrictTo('admin'), productController.updateProduct);
 router.get('/search/:key', productController.searchProduct);
 router.get('/searchCategory/:key', productController.searchCategoryProd);
-// router.get('/searchRate/hightRate', productController.searchRate);
 router.delete(
   '/delete/:id',
   authController.protect,
