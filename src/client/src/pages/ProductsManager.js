@@ -15,6 +15,7 @@ export default function ProductsManager() {
     const getProducts = async () => {
       const products = await getAllProducts();
       setProducts(products.data.data);
+      console.log(products);
     };
     getProducts();
   }, []);
@@ -40,6 +41,7 @@ export default function ProductsManager() {
                 name={pro.name}
                 price={pro.price}
                 image={pro.image}
+                id={pro._id}
               />
             </Grid>
           ))}

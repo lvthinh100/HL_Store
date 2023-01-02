@@ -18,6 +18,7 @@ export default function ProductCard({ name, price, image, id }) {
       <Card
         sx={{
           width: "100%",
+          height: "100%",
           overflow: "hidden",
           cursor: "pointer",
           textDecoration: "none",

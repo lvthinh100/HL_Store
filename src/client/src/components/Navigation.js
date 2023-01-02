@@ -17,19 +17,19 @@ export default function Navigation({ theme }) {
   const color = theme === "light" ? "#fff" : "#333";
   return (
     <Stack direction="row" width="60%" justifyContent="space-between">
-      <NavLinkStyled color={color} to={"/"}>
+      <NavLinkStyled color={color} to={"/collection/men"}>
         Men
       </NavLinkStyled>
-      <NavLinkStyled color={color} to={"/login"}>
+      <NavLinkStyled color={color} to={"/collection/women"}>
         Women
       </NavLinkStyled>
-      <NavLinkStyled color={color} to={"/login"}>
+      <NavLinkStyled color={color} to={"/collection/kid"}>
         Kid
       </NavLinkStyled>
-      <NavLinkStyled color={color} to={"/login"}>
+      <NavLinkStyled color={color} to={"/collection/coat"}>
         Coats
       </NavLinkStyled>
-      <NavLinkStyled color={color} to={"/"}>
+      <NavLinkStyled color={color} to={"/collection/new-arrivals"}>
         New Arrivals
       </NavLinkStyled>
     </Stack>

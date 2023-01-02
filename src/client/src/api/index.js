@@ -52,3 +52,16 @@ export const createOrder = async (shippingInfo) =>
   });
 export const getOrders = async () =>
   axios.get(`${url}/api/orders`, { withCredentials: true });
+export const updateOrderStatus = async (orderId, status) =>
+  axios.patch(
+    `${url}/api/orders/updateOrderStatus/${orderId}`,
+    { status },
+    { withCredentials: true }
+  );
+
+export const searchProduct = async (key) =>
+  axios.get(`${url}/api/products/search/${key}`);
+export const searchCollection = async (category) =>
+  axios.get(`${url}/api/products/searchCategory/${category}`);
+export const getHighRateProducts = async () =>
+  axios.get(`${url}/api/products/highRate`);

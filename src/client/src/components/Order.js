@@ -82,10 +82,19 @@ const style = {
   p: 4,
 };
 
-export default function Order({ order }) {
+export default function Order({ order, onUpdateStatus }) {
   const [open, setOpen] = useState(false);
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
+
+  const [status, setStatus] = useState(order.status);
+  const statusChangeHandler = function (e) {
+    setStatus(e.target.value);
+  };
+
+  const confirmUpdateStatusHandler = function () {
+    onUpdateStatus(order._id, status);
+  };
 
   const user = useSelector((state) => state.auth.user);
   const isAdmin = user.role === "admin";
@@ -153,12 +162,16 @@ export default function Order({ order }) {
               <Typography fontWeight="bold">Status</Typography>
               {!isAdmin && <Typography>{order.status}</Typography>}
               {isAdmin && (
-                <Select sx={{ width: "100px", height: "40px" }}>
-                  <MenuItem>UNCONFIRMED</MenuItem>
-                  <MenuItem>CONFIRMED</MenuItem>
-                  <MenuItem>PACKED</MenuItem>
-                  <MenuItem>DELIVERING</MenuItem>
-                  <MenuItem>SUCCESS</MenuItem>
+                <Select
+                  value={status}
+                  onChange={statusChangeHandler}
+                  sx={{ width: "100px", height: "40px" }}
+                >
+                  <MenuItem value={"UNCONFIRMED"}>UNCONFIRMED</MenuItem>
+                  <MenuItem value={"CONFIRMED"}>CONFIRMED</MenuItem>
+                  <MenuItem value={"PACKED"}>PACKED</MenuItem>
+                  <MenuItem value={"DELIVERING"}>DELIVERING</MenuItem>
+                  <MenuItem value={"SUCCESS"}>SUCCESS</MenuItem>
                 </Select>
               )}
             </Grid>
@@ -168,7 +181,11 @@ export default function Order({ order }) {
             {isAdmin && (
               <Grid item xs={12}>
                 <Stack direction="row" justifyContent="flex-end">
-                  <Button variant="contained" sx={{ mr: 1 }}>
+                  <Button
+                    onClick={confirmUpdateStatusHandler}
+                    variant="contained"
+                    sx={{ mr: 1 }}
+                  >
                     SAVE CHANGE
                   </Button>
                   <Button variant="outlined" onClick={closeModal}>

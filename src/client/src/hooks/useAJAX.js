@@ -17,6 +17,7 @@ export default function useAJAX(asyncTask) {
     } catch (err) {
       setError(err.response.data.message);
       setLoading(false);
+      throw err;
     }
   };
   return [error, loading, handleAsync];

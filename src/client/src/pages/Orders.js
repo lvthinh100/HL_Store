@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useState } from "react";
 
 import { Container, Grid, Tab, Tabs, Typography, styled } from "@mui/material";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Order from "../components/Order";
-import { getOrders } from "../api";
-
+import { getOrders, updateOrderStatus } from "../api";
+import { appActions } from "../redux/slices/appSlice";
 const StyledTab = styled(Tab)(({ theme }) => ({
   border: "1px solid #333",
   textAlign: "left",
@@ -16,9 +16,11 @@ const StyledTab = styled(Tab)(({ theme }) => ({
 }));
 
 export default function Orders() {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const [orders, setOrders] = useState([]);
   const [tab, setTab] = useState("ALL");
+
   useEffect(() => {
     const getOrdersData = async () => {
       const { data } = await getOrders();
@@ -36,6 +38,32 @@ export default function Orders() {
     if (tab === "ALL") return orders;
     return orders.filter((or) => or.status === tab);
   }, [orders, tab]);
+
+  const handleUpdateOrderStatus = async function (orderId, status) {
+    const updatedOrderIndex = orders.findIndex(
+      (order) => order._id === orderId
+    );
+    if (orders[updatedOrderIndex].status === status) return;
+    const newOrders = [...orders];
+    newOrders[updatedOrderIndex].status = status;
+    setOrders(newOrders);
+    try {
+      await updateOrderStatus(orderId, status);
+      dispatch(
+        appActions.showNotification({
+          variant: "success",
+          message: "Update order status success",
+        })
+      );
+    } catch (err) {
+      dispatch(
+        appActions.showNotification({
+          variant: "error",
+          message: "Failed to update order status success",
+        })
+      );
+    }
+  };
 
   return (
     <Container>
@@ -57,7 +85,11 @@ export default function Orders() {
         </Grid>
         <Grid item xs={10}>
           {filterOrder().map((order) => (
-            <Order key={order._id} order={order} />
+            <Order
+              key={order._id}
+              order={order}
+              onUpdateStatus={handleUpdateOrderStatus}
+            />
           ))}
         </Grid>
       </Grid>

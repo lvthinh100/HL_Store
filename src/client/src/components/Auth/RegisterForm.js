@@ -64,7 +64,7 @@ export default function LoginForm({ onChangeTab }) {
   const { handleSubmit } = methods;
   const onSubmitRegisterForm = async (data) => {
     const response = await signupHandler(data);
-    if (response.data.status === "success") {
+    if (response.data?.status === "success") {
       dispatch(
         appActions.showNotification({
           variant: "success",
@@ -176,7 +176,7 @@ export default function LoginForm({ onChangeTab }) {
       />
 
       {error && (
-        <Alert variant="outlined" severity="error" color="">
+        <Alert variant="outlined" severity="error">
           {error}
         </Alert>
       )}

@@ -2,12 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { Button, Grid, Typography, Box, Stack, Container } from "@mui/material";
-import Carousel from "react-material-ui-carousel";
 
 import { StyledArrBox, StyledArrPaper, StyledButton } from "./HomeStyle";
-import ProductCard from "../components/ProductCard";
 import VoucherTimer from "../components/VoucherTimer";
 import HomeTab from "../components/Sections/HomeTab";
+import HomeCarousel from "../components/Sections/HomeCarousel";
+import HomeArrivals from "../components/Sections/HomeArrivals";
 
 const Headline = function ({ children, subtitle, title, theme }) {
   const color = theme === "light" ? "#fff" : "inherit";
@@ -80,32 +80,7 @@ export default function Home() {
                 </Typography>
               </Stack>
             </Grid>
-            <Grid container spacing={12}>
-              {[0, 1, 2].map((el, i) => (
-                <Grid item xs={4} key={i}>
-                  <StyledArrBox>
-                    <img
-                      style={{
-                        width: "100%",
-                        transition: "0.5s all ease-in-out",
-                      }}
-                      src="http://localhost:3000/img/model.jpg"
-                      alt="Sweater"
-                    />
-                    <StyledArrPaper>
-                      <Typography
-                        textTransform="uppercase"
-                        textAlign="center"
-                        lineHeight={"60px"}
-                        fontSize="1.8rem"
-                      >
-                        Sweater
-                      </Typography>
-                    </StyledArrPaper>
-                  </StyledArrBox>
-                </Grid>
-              ))}
-            </Grid>
+            <HomeArrivals />
           </Grid>
           <Grid container margin="40px 0" spacing={5}>
             <Grid item xs={7}>
@@ -148,7 +123,12 @@ export default function Home() {
                   theme={"light"}
                 >
                   <Box>
-                    <StyledButton variant="outlined" color="lighter">
+                    <StyledButton
+                      variant="outlined"
+                      color="lighter"
+                      LinkComponent={Link}
+                      to="/products"
+                    >
                       See More
                     </StyledButton>
                   </Box>
@@ -156,32 +136,7 @@ export default function Home() {
               </Box>
             </Grid>
             <Grid item xs={8}>
-              <Carousel
-                indicatorContainerProps={{
-                  style: {
-                    marginTop: 0,
-                    textAlign: "left", // 4
-                  },
-                }}
-                indicatorIconButtonProps={{
-                  style: {
-                    zIndex: 100,
-                  },
-                }}
-                autoPlay={false}
-              >
-                {[0, 1, 2, 3, 4].map((el) => (
-                  <Grid container key={el} spacing={2}>
-                    <Grid item xs={6}>
-                      <ProductCard title={el} />
-                    </Grid>
-
-                    <Grid item xs={6}>
-                      <ProductCard title={el} />
-                    </Grid>
-                  </Grid>
-                ))}
-              </Carousel>
+              <HomeCarousel />
             </Grid>
           </Grid>
         </Container>
@@ -191,8 +146,10 @@ export default function Home() {
 
       <Box>
         <StyledButton
-          sx={{ display: "block", margin: "10px auto" }}
+          sx={{ display: "block", margin: "10px auto", width: "200px" }}
           variant="contained"
+          LinkComponent={Link}
+          to="/products"
         >
           SEE MORE
         </StyledButton>

@@ -51,22 +51,26 @@ export default function LoginForm({ onChangeTab }) {
   });
   const { handleSubmit } = methods;
   const submitLoginForm = async (data) => {
-    const response = await loginHandler(data.email, data.password);
-    if (response.data.status === "success") {
-      dispatch(
-        appActions.showNotification({
-          variant: "success",
-          message: `Login successfully with email: ${data.email}`,
-        })
-      );
-      dispatch(
-        authActions.setUser({
-          user: response.data.data.user,
-          tokenExpires: response.data.tokenExpires,
-          token: response.data.token,
-        })
-      );
-      dispatch(getCartData());
+    try {
+      const response = await loginHandler(data.email, data.password);
+      if (response.data?.status === "success") {
+        dispatch(
+          appActions.showNotification({
+            variant: "success",
+            message: `Login successfully with email: ${data.email}`,
+          })
+        );
+        dispatch(
+          authActions.setUser({
+            user: response.data.data.user,
+            tokenExpires: response.data.tokenExpires,
+            token: response.data.token,
+          })
+        );
+        dispatch(getCartData());
+      }
+    } catch (err) {
+      return;
     }
   };
 
@@ -106,7 +110,7 @@ export default function LoginForm({ onChangeTab }) {
         }}
       />
       {error && (
-        <Alert variant="outlined" severity="error" color="">
+        <Alert variant="outlined" severity="error">
           {error}
         </Alert>
       )}

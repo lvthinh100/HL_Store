@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import {
   Container,
@@ -26,6 +26,7 @@ import { useDispatch } from "react-redux";
 import { cartActions } from "../redux/slices/cartSlice";
 import useAuth from "../hooks/useAuth";
 import { appActions } from "../redux/slices/appSlice";
+import average from "../utils/average";
 
 const FieldHeader = styled(Typography)({
   fontWeight: "Bold",
@@ -52,6 +53,7 @@ export default function Product() {
   const [quantity, setQuantity] = useState(1);
   const { user } = useAuth();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const postCommentHandler = function (newComment) {
     setDetail({
@@ -75,11 +77,15 @@ export default function Product() {
 
   useEffect(() => {
     const getDetail = async () => {
-      const { data } = await getProductDetail(id);
-      setDetail(data.data);
+      try {
+        const { data } = await getProductDetail(id);
+        setDetail(data.data);
+      } catch (err) {
+        navigate("/error");
+      }
     };
     getDetail();
-  }, [id]);
+  }, [id, navigate]);
 
   return (
     <Container sx={{ my: 10 }}>
@@ -99,9 +105,13 @@ export default function Product() {
           <Typography variant="h3">{detail.name}</Typography>
           {/* <Typography variant="h3">{id}</Typography> */}
           <Stack direction="row" alignItems="center" sx={{ my: 2 }}>
-            <Rating name="read-only" value={3} readOnly />
+            <Rating
+              name="read-only"
+              value={detail.ratingsAverage ? detail.ratingsAverage : 0}
+              readOnly
+            />
             <Typography variant="subtitle1" sx={{ mx: 1 }}>
-              (11 rating)
+              {detail.comments?.length} rating
             </Typography>
           </Stack>
           <Typography variant="subtitle1" fontWeight="bold" fontSize="20px">

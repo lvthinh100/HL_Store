@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { appActions } from "../redux/slices/appSlice";
 //config
 import { NAVBAR } from "../config";
+import Search from "./Search/Search";
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -55,6 +56,7 @@ export default function Navbar() {
           </Link>
           <Navigation theme="dark" />
           <Stack direction="row">
+            <Search />
             <Cart />
 
             <IconButton onClick={handleClickUser}>

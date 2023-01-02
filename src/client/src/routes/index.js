@@ -9,6 +9,8 @@ import Orders from "../pages/Orders.js";
 import ProtectedRoute from "./ProtectedRoute.js";
 import ProductsManager from "../pages/ProductsManager.js";
 import AllProducts from "../pages/AllProducts.js";
+import Collection from "../pages/Collection.js";
+import NotFound from "../pages/NotFound.js";
 
 export default function MyRouter() {
   return (
@@ -28,6 +30,9 @@ export default function MyRouter() {
           }
         />
         <Route exact path="/products-manager" element={<ProductsManager />} />
+        <Route exact path="/collection/:category" element={<Collection />} />
+        <Route exact path="/error" element={<NotFound />} />
+        <Route exact path="*" element={<NotFound />} />
       </Routes>
     </Layout>
   );
